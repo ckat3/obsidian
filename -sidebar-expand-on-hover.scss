@@ -1,0 +1,20 @@
+.mod-left-split {
+    // transition: width 200ms;
+	width: 0px !important;
+}
+
+.mod-root {
+    // transition: margin-left 200ms;
+}
+
+.horizontal-main-container:has(.workspace-ribbon:hover),
+.horizontal-main-container:has(.mod-left-split:hover) {
+	.mod-left-split {
+		z-index: 5 !important;
+		width: 280px !important;
+	}
+
+	.mod-root {
+		margin-left: -280px !important;
+	}
+}

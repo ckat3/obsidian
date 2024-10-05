@@ -1,0 +1,133 @@
+@use "sass:meta";
+@use "sass:map";
+@use "sass:string";
+@use "sass:list";
+
+:root {
+	$note-styles: (
+		"meta": (
+			"icon": "💼",
+			"bg-color": #00000007,
+			"font": inherit,
+			"bg-img": #00000007,
+		),
+
+		"daily": (
+			"icon": "📆 ",
+			"color": #cc7777,
+			"bg-color": #ff000015,
+			"font": "Calibri",
+			"bg-op": .1,
+		),
+
+		"litteraire": (
+			"icon": "📄 ",
+			"color": #558855,
+			"bg-color": #00ff0015,
+			"font": "Cambria",
+			"bg-img": #00ff0015,
+		),
+
+		"livre": (
+			"icon": "📘 ",
+		),
+
+		"chapitre": (
+			"icon": "📖 ",
+		),
+
+		"article": (
+			"icon": "📰 ",
+		),
+
+		"essai": (
+			"icon": "📜 ",
+		),
+
+		"web": (
+			"icon": "🌐 ",
+		),
+
+		"concept": (
+			"icon": "🧬 ",
+			"color": #5588cc,
+			"bg-color": #0088ff15,
+			"font": inherit,
+			"bg-op": .05,
+		),
+
+		"écrit": (
+			"icon": "✒ ",
+			"color": #ddbb99,
+			"bg-color": #ffffaa15,
+			"font": "Times New Roman",
+			"bg-op": .1,
+		),
+
+		"idee": (
+			"icon": "💡 ",
+			"color": #dddd99,
+		),
+
+		"personne": (
+			"icon": "🙍‍♀ ️",
+			"color": #ddbb99,
+			"bg-color": #ffaaaa15,
+		),
+
+		"kat": (
+			"icon": "🍃 ",
+			"color": #dd55dd,
+			"bg-color": #ffaaff30,
+		)
+	);
+	$stylelist: map.keys($note-styles);
+
+	@function get-smap($style) {
+		@return map.get($note-styles, $style);
+	}
+
+
+	$smap: none; // will be overridden in the each loop
+	@function get-attr($attr) {
+		@if (map.has-key($smap, $attr)) {
+			@return map.get($smap, $attr);
+		}
+		@return none;
+	}
+
+	@each $style in $stylelist {
+		$smap: get-smap($style);
+
+			.workspace-leaf-content:has(.basename-tag[data-tag*=#{$style}]) {
+				.cm-line {
+					font-family: get-attr("font") !important;
+				}
+				.view-header {
+					background-color: get-attr("bg-color") !important;
+				}
+
+				.inline-title::before,
+				[data-tag*=#{$style}]::before {
+					content: get-attr("icon") !important;
+				}
+			}
+
+			.workspace-tab-header-inner:has([data-link-tags*=#{$style}]) {
+			}
+
+			.data-link-text[data-link-tags*=#{$style}]::before {
+				width: 1.4rem;
+				content: get-attr("icon") !important;
+			}
+
+			[data-link-tags*=#{$style}],
+			[data-tag*=#{$style}] {
+				color: get-attr("color") !important;
+			}
+	}
+}
+
+.data-link-text::before {
+	content: "  ·     ";
+}
